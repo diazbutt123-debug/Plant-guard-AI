@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PlantGuard AI</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div class="loading-text" id="loadingText">Analyzing plant...</div>
+</div>
+
+<div class="sidebar">
+  <div class="logo">
+    <div class="logo-icon">🌿</div>
+    <div>
+      <div class="logo-name">PlantGuard AI</div>
+      <div class="logo-sub">Disease Detector</div>
+    </div>
+  </div>
+
+  <div class="nav-section" style="margin-top:4px;">Detect</div>
+  <div class="nav-item active" onclick="showPage('scan',this)"><span>🔬</span> Scan Plant</div>
+  <div class="nav-item" onclick="showPage('batch',this)"><span>📁</span> Batch Folder</div>
+
+  <div class="divider" style="margin:8px 1.25rem;"></div>
+
+  <div class="nav-section">Analysis</div>
+  <div class="nav-item" onclick="showPage('history',this)"><span>🕐</span> History</div>
+  <div class="nav-item" onclick="showPage('compare',this)"><span>⚖️</span> Compare</div>
+  <div class="nav-item" onclick="showPage('stats',this)"><span>📊</span> Statistics</div>
+
+  <div class="sidebar-bottom">
+    <div class="server-status offline" id="serverStatus">
+      <div class="dot"></div>
+      <span id="serverStatusText">Connecting...</span>
+    </div>
+    <button class="btn" style="width:100%;justify-content:center;margin-top:8px;" onclick="checkServer()">
+      🔄 Retry Connection
+    </button>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="topbar">
+    <div class="topbar-title" id="topbarTitle">Scan Plant</div>
+    <button class="btn btn-primary" onclick="openImageDialog()">+ Scan Image</button>
+  </div>
+
+  <div class="page active" id="page-scan">
+    <div class="server-banner offline" id="serverBanner">
+      ⚠️ AI server offline — run <code>python predict_server.py</code> in your PLANT-DISEASE folder, then click Retry Connection.
+    </div>
+    <div class="scan-layout">
+      <div class="card">
+        <div class="card-title">🖼️ Plant Image</div>
+        <div class="drop-zone" id="dropZone"
+             onclick="openImageDialog()"
+             ondragover="handleDragOver(event)"
+             ondrop="handleDrop(event)"
+             ondragleave="handleDragLeave(event)">
+          <div class="drop-icon">📷</div>
+          <div class="drop-title">Drop image here</div>
+          <div class="drop-sub">or click to browse — JPG, PNG, WEBP</div>
+        </div>
+        <div class="preview-wrap" id="previewWrap">
+          <img id="previewImg" src="" alt="Preview"/>
+          <div class="preview-label" id="previewLabel">image.jpg</div>
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="runAnalysis()">
+          🔬 Analyze Disease
+        </button>
+        <button class="btn" style="width:100%;justify-content:center;" onclick="openImageDialog()">
+          📂 Choose Different Image
+        </button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🧬 AI Diagnosis</div>
+        <div class="result-empty" id="resultEmpty">
+          <div class="icon">🌱</div>
+          <p>Upload a plant leaf image<br/>to get real AI diagnosis</p>
+        </div>
+        <div class="result-content" id="resultContent">
+          <div id="diseaseBadge" class="disease-badge">—</div>
+          <div class="conf-bar-wrap">
+            <div class="conf-label">
+              <span>Confidence</span>
+              <span id="confPct">0%</span>
+            </div>
+            <div class="conf-bar">
+              <div class="conf-fill" id="confFill" style="width:0%"></div>
+            </div>
+          </div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px;font-family:'DM Mono',monospace;">TOP 3 PREDICTIONS</div>
+          <div class="top3-list" id="top3List"></div>
+          <div class="divider"></div>
+          <div class="treatment-box">
+            <div class="treatment-title">💊 Treatment Recommendation</div>
+            <div id="treatmentText">—</div>
+          </div>
+          <div style="font-size:11px;color:var(--muted);margin-top:6px;font-family:'DM Mono',monospace;" id="scanTimestamp"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-batch">
+    <div class="card" style="max-width:480px;margin-bottom:1rem;">
+      <div class="card-title">📁 Batch Folder Scan</div>
+      <p style="font-size:13px;color:var(--muted);">Select a folder with multiple plant images. All will be analyzed automatically.</p>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:4px;" onclick="openFolderDialog()">
+        📂 Select Image Folder
+      </button>
+    </div>
+    <div id="batchResults" class="history-grid"></div>
+  </div>
+
+  <div class="page" id="page-history">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
+      <div class="filter-row" style="margin:0;">
+        <button class="filter-btn active" onclick="filterHistory('all',this)">All</button>
+        <button class="filter-btn" onclick="filterHistory('disease',this)">Diseased</button>
+        <button class="filter-btn" onclick="filterHistory('healthy',this)">Healthy</button>
+      </div>
+      <button class="btn" onclick="clearHistory()" style="font-size:11px;">🗑 Clear History</button>
+    </div>
+    <div id="historyGrid" class="history-grid">
+      <div class="empty-state"><div class="icon">📋</div><p>No scans yet.</p></div>
+    </div>
+  </div>
+
+  <div class="page" id="page-compare">
+    <p style="font-size:13px;color:var(--muted);margin-bottom:1rem;">Compare two scans to track disease progression over time.</p>
+    <div style="display:flex;gap:8px;margin-bottom:1rem;">
+      <select id="compareA"><option value="">— Select scan A (earlier) —</option></select>
+      <select id="compareB"><option value="">— Select scan B (later) —</option></select>
+      <button class="btn btn-primary" onclick="runCompare()">Compare</button>
+    </div>
+    <div id="compareResult"></div>
+  </div>
+
+  <div class="page" id="page-stats">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">TOTAL SCANS</div>
+        <div class="stat-value" id="statTotal">0</div>
+        <div class="stat-sub">all time</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">DISEASED</div>
+        <div class="stat-value" id="statDiseased" style="color:var(--red)">0</div>
+        <div class="stat-sub" style="color:var(--red)">detected</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">HEALTHY</div>
+        <div class="stat-value" id="statHealthy" style="color:var(--green)">0</div>
+        <div class="stat-sub">plants</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">AVG CONFIDENCE</div>
+        <div class="stat-value" id="statConf">—</div>
+        <div class="stat-sub">accuracy</div>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="card-title">Disease Frequency</div>
+      <div class="bar-chart" id="diseaseChart">
+        <div class="empty-state"><p>No data yet.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<input type="file" id="imageFileInput" accept="image/*" onchange="handleFileInputChange(event)"/>
+
+<script src="rendered.js"></script>
+</body>
+</html>

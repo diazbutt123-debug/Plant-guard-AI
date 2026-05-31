@@ -1,0 +1,37 @@
+{
+  "name": "plantguard-ai",
+  "version": "1.0.0",
+  "description": "AI-powered plant disease detector",
+  "author": "Your Name",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win"
+  },
+  "build": {
+    "appId": "com.plantguard.ai",
+    "productName": "PlantGuard AI",
+
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "files": [
+      "**/*",
+      "!venv/**",
+      "!node_modules/**"
+    ],
+    "extraResources": [
+      {
+        "from": "server/",
+        "to": "server/"
+      }
+    ]
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^26.8.1"
+  }
+}
