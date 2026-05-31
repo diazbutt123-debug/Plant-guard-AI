@@ -14,7 +14,6 @@
   --radius:  10px;
 }
 
-/* ── Reset ── */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -30,7 +29,6 @@ body {
   overflow: hidden;
 }
 
-/* ── Sidebar ── */
 .sidebar {
   width: 220px;
   background: var(--bg2);
@@ -112,7 +110,6 @@ body {
   border-top: 1px solid var(--border);
 }
 
-/* ── Server Status ── */
 .server-status {
   font-size: 11px;
   font-family: 'DM Mono', monospace;
@@ -149,7 +146,7 @@ body {
   50%       { opacity: .4; }
 }
 
-/* ── Main Area ── */
+
 .main {
   flex: 1;
   display: flex;
@@ -173,7 +170,7 @@ body {
   font-weight: 700;
 }
 
-/* ── Buttons ── */
+
 .btn {
   display: inline-flex;
   align-items: center;
@@ -207,7 +204,7 @@ body {
   color: white;
 }
 
-/* ── Pages ── */
+
 .page {
   display: none;
   flex: 1;
@@ -219,7 +216,7 @@ body {
   display: block;
 }
 
-/* ── Cards ── */
+
 .card {
   background: var(--bg2);
   border: 1px solid var(--border);
@@ -235,7 +232,7 @@ body {
   font-weight: 600;
 }
 
-/* ── Drop Zone ── */
+
 .drop-zone {
   border: 1.5px dashed var(--border);
   border-radius: var(--radius);
@@ -276,7 +273,7 @@ body {
   color: var(--muted);
 }
 
-/* ── Preview ── */
+
 .preview-wrap {
   position: relative;
   border-radius: var(--radius);
@@ -308,7 +305,7 @@ body {
   font-family: 'DM Mono', monospace;
 }
 
-/* ── Result ── */
+
 .result-empty {
   flex: 1;
   display: flex;
@@ -334,7 +331,7 @@ body {
   display: block;
 }
 
-/* ── Disease Badge ── */
+
 .disease-badge {
   display: inline-flex;
   align-items: center;
@@ -364,7 +361,7 @@ body {
   border: 1px solid rgba(239,159,39,.3);
 }
 
-/* ── Confidence Bar ── */
+
 .conf-bar-wrap {
   margin: 8px 0;
 }
@@ -398,7 +395,7 @@ body {
   transition: width .6s ease;
 }
 
-/* ── Top 3 ── */
+
 .top3-list {
   display: flex;
   flex-direction: column;
@@ -439,7 +436,7 @@ body {
   opacity: .6;
 }
 
-/* ── Treatment Box ── */
+
 .treatment-box {
   background: var(--bg3);
   border-radius: 8px;
@@ -459,14 +456,14 @@ body {
   letter-spacing: .05em;
 }
 
-/* ── Divider ── */
+
 .divider {
   height: 1px;
   background: var(--border);
   margin: 6px 0;
 }
 
-/* ── Filter Row ── */
+
 .filter-row {
   display: flex;
   gap: 8px;
@@ -492,7 +489,7 @@ body {
   background: rgba(29,158,117,.1);
 }
 
-/* ── History Grid ── */
+
 .history-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -547,7 +544,7 @@ body {
   border-top: 1px solid var(--border);
 }
 
-/* ── Pills ── */
+
 .pill {
   font-size: 10px;
   font-weight: 600;
@@ -561,7 +558,7 @@ body {
 .pill-success { background: rgba(29,158,117,.15); color: var(--green); }
 .pill-warning { background: rgba(239,159,39,.15); color: var(--amber); }
 
-/* ── Compare ── */
+
 .compare-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -600,7 +597,7 @@ body {
 .delta-better { background: rgba(29,158,117,.15); color: var(--green); }
 .delta-same   { background: var(--bg3);           color: var(--muted); }
 
-/* ── Stats ── */
+
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -633,7 +630,7 @@ body {
   margin-top: 2px;
 }
 
-/* ── Chart ── */
+
 .chart-card {
   background: var(--bg2);
   border: 1px solid var(--border);
@@ -686,7 +683,7 @@ body {
   font-family: 'DM Mono', monospace;
 }
 
-/* ── Loading Overlay ── */
+
 .loading-overlay {
   display: none;
   position: fixed;
@@ -722,7 +719,7 @@ body {
   font-family: 'DM Mono', monospace;
 }
 
-/* ── Misc ── */
+
 .empty-state {
   text-align: center;
   padding: 4rem 2rem;
