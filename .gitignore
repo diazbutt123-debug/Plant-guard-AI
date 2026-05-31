@@ -1,0 +1,7 @@
+﻿venv/
+node_modules/
+server/predict_server.exe
+server/build/
+server/dist/
+dist/
+__pycache__/
